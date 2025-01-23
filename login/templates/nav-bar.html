@@ -1,0 +1,23 @@
+<nav class="navbar sticky-top bg-body-tertiary bg-light">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'home'%}">Securio&ensp;<i class="fa-solid fa-key"></i></a>
+    <div class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fa-regular fa-circle-user"></i>
+      </a>
+      <ul class="dropdown-menu">
+        {% if user.is_authenticated %}
+        <form action="{% url 'logout' %}" method="POST">
+          {% csrf_token %}
+          <li><a class="dropdown-item">
+            <button type="submit" class="btn btnl-light">Logout&ensp;<i class="fa-solid fa-right-from-bracket"></i></button></a></li>
+        </form>
+        {% else %}
+        <li><a class="dropdown-item" href="{% url 'register' %}">Register</a></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="{% url 'login' %}">Login</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>

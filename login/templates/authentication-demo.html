@@ -1,0 +1,21 @@
+{% extends "section-card.html" %}
+{% load static %}
+
+{% block section_content %}
+  <h6 class="display-5">AO7: Identification and Authentication Failure</h6>
+  <img src="{% static 'login\svg\undraw_forgot_password.svg' %}" alt="Password image" class="mb-4 me-5">
+  <p>According to <a href="https://docs.djangoproject.com/en/5.1/topics/auth/passwords/#:~:text=By%20default%2C%20Django%20uses%20the,of%20computing%20time%20to%20break">Django Docs</a>, "by default, Django uses the PBKDF2 algorithm with a SHA256 hash, a password stretching mechanism recommended by NIST", which is deemed very secure, requiring "massive amounts of computing time to break". Django adds a salt to the password, along with the number of iterations of the SHA256 hash that are performed.</p>
+  <p>As a result, the security of passwords stored in the database is not a general concern in Django (provided the overall security of the application is enforced).</p>
+  <p>Django additionally makes sure to enforce password policies by default to ensure that a user doesn't provide weak credentials, which can be seen by viewing the register page below. If the user does not conform to the policies, an error will be thrown, and the user will not be able to access the application.</p>
+  <a href="{% url 'register' %}" class="text-center">
+    <button class="btn btn-light border my-4 rounded-5">
+      Click Here to View the Register page&ensp;<i class="fa-solid fa-key"></i>
+    </button>
+  </a>
+  <hr class="my-4">
+  <p>Additionally, in Django, it is very easy to ensure that a user can only access a site if he is authenticated. All that is required is to use Django's in-build library, "django.contrib.auth", which also contains Django's built-in login and logout modules, streamlining that process as well.</p>
+  <div class="alert alert-info" role="alert">
+    Demo for authentication -- this page itself! Login + Logout to see the difference in what the home page displays and then return to this page!
+  </div>
+
+{% endblock %}

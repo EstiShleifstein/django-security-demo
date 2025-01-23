@@ -1,0 +1,50 @@
+{% extends "section-card.html" %}
+{% load static %}
+
+{% block section_content %}
+
+  {% if not secure_comment %}
+  <h6 class="display-5">XSS Attacks</h6>
+  <img src="{% static 'login/svg/undraw_push_notifications.svg' %}" alt="xss image" class="m-5">
+  <p class="lead">XSS Attacks, also known as client-side scripting attacks, allow a user to inject client-side scripts into the browsers of other users.</p>
+  <ul>
+    <li>A common example where this could come up is when an attacker manages to get malicious code to be inputted into the database and displayed on other users' browsers.</li>
+    <li>Django has an autoescape feature which prevents this from occuring. However, it also gives the option to autoescape this security feature by adding the safe filter to the variable we would like to display on the screen.</li>
+  </ul>
+  <p>We will see the outcome of both options below.</p>
+  <hr>
+  <div class="alert alert-info" role="alert">
+    Demo for how Django protects against XXS attacks below!
+  </div>
+
+  {% endif %}
+  
+  <div class="card p-5 rounded-5 bg-light my-5">
+    <div class="my-3">
+      <h6 class="display-6"><i class="fa-regular fa-comments"></i>&ensp;Comment Section</h6>
+      {% if secure_comment %}
+      <div class="alert alert-info rounded-5 m-5" role="alert">
+        <i class="fa-solid fa-comment-dots"></i>&ensp;{{secure_comment}}
+      </div>  
+      {{unsecure_comment|safe}}
+      <p>The difference we see between the safe and malicious message is due to the fact that one uses HTML's autoescape feature, while the other uses the safe filter, disabling Django's autoescape feature, making the application privy to XSS attacks.</p>
+      {% else %}
+      <hr class="my-5">
+      <form method="POST">
+        {% csrf_token %}
+        {{form.secure_comment.label}}
+        {{ form.secure_comment }}
+        <p class="text-muted fst-italic mb-4">Note: Generally, adding this piece of malicious code to a comment section could cause a popup on the screen of other viewers, in effect, causing an XSS attack. However, this is not the case in Django, as Django automatically escapes special characters in templates, such as <, >, and &, rendering plaintext instead of executable code.</p>
+        {{form.unsecure_comment.label}}
+        {{ form.unsecure_comment }}
+        <p class="text-muted fst-italic">The text displayed in the textbox above will not be protected by Django's autoescape feature, due to the addition of the safe filter on the rendering of the result.</p>
+        <div class="text-center">
+          <button type="submit" class="btn btn-outline-dark my-3 rounded-5">Submit Comment&ensp;<i class="fa-regular fa-square-plus"></i></button>
+        </div>
+      </form>
+    </div>
+    {% endif %}
+    
+   
+{% endblock %}
+
